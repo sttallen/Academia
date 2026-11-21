@@ -1,0 +1,6 @@
+{
+  "name": "Espaço Vital — Performance & Biomecânica",
+  "description": "Experiência digital dark luxury athletic para a academia Espaço Vital com grade de aulas em tempo real, diagnóstico biométrico e arquitetura pronta para Supabase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

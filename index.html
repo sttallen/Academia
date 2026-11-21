@@ -1,0 +1,2435 @@
+<!doctype html>
+<html lang="pt-BR" class="dark scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Espaço Vital — Performance, Biomecânica & Condicionamento</title>
+    <meta
+      name="description"
+      content="Academia Espaço Vital: musculação de alta performance, arena HIIT, estúdio coletivo e avaliação por bioimpedância em estética dark luxury."
+    />
+    <meta property="og:title" content="Espaço Vital — Performance, Biomecânica & Condicionamento" />
+    <meta
+      property="og:description"
+      content="Treinamento orientado por dados, equipamentos articulados de última geração e grade de aulas em tempo real."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts: Barlow Condensed (Display) + Plus Jakarta Sans (Body) + JetBrains Mono (Metrics) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              obsidian: '#050505',
+              carbon: '#0D0F0E',
+              graphite: '#141816',
+              vital: '#00E676',
+              emeraldVital: '#10B981',
+              limeNeon: '#A3E635',
+            },
+            fontFamily: {
+              display: ['"Barlow Condensed"', 'sans-serif'],
+              sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+              mono: ['"JetBrains Mono"', 'monospace'],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Lucide Icons via CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- GSAP 3 + ScrollTrigger via CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+      :root {
+        --bg-obsidian: #050505;
+        --bg-carbon: #0d0f0e;
+        --bg-graphite: #141816;
+        --vital-green: #00e676;
+        --vital-emerald: #10b981;
+        --vital-lime: #a3e635;
+        --border-hairline: rgba(255, 255, 255, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        background-color: var(--bg-obsidian);
+        color: #f4f6f5;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      .tabular-nums {
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Architectural subtle tech mesh */
+      .bg-tech-mesh {
+        background-image:
+          linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 56px 56px;
+      }
+
+      /* Glass surface & mouse-tracking spotlight border */
+      .glass-card {
+        position: relative;
+        background: rgba(20, 24, 22, 0.78);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .glass-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px;
+        background: radial-gradient(
+          420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+          rgba(0, 230, 118, 0.42),
+          transparent 60%
+        );
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+        pointer-events: none;
+      }
+
+      .glass-card:hover::before {
+        opacity: 1;
+      }
+
+      /* Controlled vital glow for primary actions */
+      .btn-vital {
+        background: linear-gradient(135deg, #00e676 0%, #10b981 100%);
+        color: #050505;
+        box-shadow: 0 0 24px rgba(0, 230, 118, 0.22);
+        transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, filter 0.18s ease;
+      }
+
+      .btn-vital:hover {
+        box-shadow: 0 0 36px rgba(0, 230, 118, 0.42);
+        filter: brightness(1.06);
+        transform: translateY(-1px);
+      }
+
+      .btn-vital:active {
+        transform: scale(0.98);
+      }
+
+      /* Kinetic Preloader Heartbeat Pulse */
+      @keyframes pulseLineDraw {
+        0% {
+          stroke-dashoffset: 380;
+        }
+        100% {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      .pulse-path {
+        stroke-dasharray: 380;
+        stroke-dashoffset: 380;
+        animation: pulseLineDraw 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* Range Slider Custom Styling */
+      input[type='range'].vital-range {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 999px;
+        outline: none;
+      }
+
+      input[type='range'].vital-range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #00e676;
+        border: 3px solid #050505;
+        box-shadow: 0 0 14px rgba(0, 230, 118, 0.55);
+        cursor: pointer;
+        transition: transform 0.15s ease;
+      }
+
+      input[type='range'].vital-range::-webkit-slider-thumb:hover {
+        transform: scale(1.15);
+      }
+
+      input[type='range'].vital-range::-moz-range-thumb {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: #00e676;
+        border: 3px solid #050505;
+        box-shadow: 0 0 14px rgba(0, 230, 118, 0.55);
+        cursor: pointer;
+      }
+
+      /* Headline balance & split mask */
+      .text-balance {
+        text-wrap: balance;
+      }
+
+      .line-mask {
+        overflow: hidden;
+      }
+
+      /* Hide scrollbars cleanly in horizontal carousel */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Reduced motion accessibility */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-obsidian text-zinc-100 selection:bg-vital selection:text-obsidian antialiased">
+    <!-- Kinetic Preloader (0.8s Heartbeat Pulse & Energy Bar Reveal) -->
+    <div
+      id="preloader"
+      aria-hidden="true"
+      class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-obsidian px-6"
+    >
+      <div class="w-full max-w-xs flex flex-col items-center gap-5">
+        <svg viewBox="0 0 260 56" class="w-56 h-12 overflow-visible" fill="none">
+          <path
+            d="M0 28 H72 L86 28 L96 10 L110 48 L124 6 L136 40 L146 28 H260"
+            stroke="rgba(255,255,255,0.1)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            class="pulse-path"
+            d="M0 28 H72 L86 28 L96 10 L110 48 L124 6 L136 40 L146 28 H260"
+            stroke="#00E676"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            style="filter: drop-shadow(0 0 10px rgba(0, 230, 118, 0.7))"
+          />
+        </svg>
+        <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+          <div
+            id="preloader-bar"
+            class="h-full bg-gradient-to-r from-vital to-limeNeon origin-left scale-x-0"
+          ></div>
+        </div>
+        <span class="font-display text-xl font-bold tracking-wider uppercase text-zinc-200">
+          Espaço Vital
+        </span>
+      </div>
+    </div>
+
+    <!-- Top Navigation Bar (Strict 3-Zone Contract: Brand | 5 Links | 1 Primary Action) -->
+    <header
+      id="main-header"
+      class="fixed top-0 inset-x-0 z-50 border-b border-white/[0.08] bg-obsidian/80 backdrop-blur-xl transition-colors duration-200"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
+        <!-- Zone 1: Single-line Brand Wordmark -->
+        <a
+          href="#hero"
+          class="font-display text-2xl font-extrabold tracking-tight text-white whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-vital rounded"
+        >
+          Espaço Vital
+        </a>
+
+        <!-- Zone 2: 5 Concise Single-Line Navigation Links -->
+        <nav aria-label="Navegação Principal" class="hidden md:flex items-center gap-7 text-sm font-medium text-zinc-300">
+          <a
+            href="#ecossistema"
+            class="hover:text-vital transition-colors whitespace-nowrap shrink-0 py-1 border-b border-transparent hover:border-vital/60"
+            >Ecossistema</a
+          >
+          <a
+            href="#horarios"
+            class="hover:text-vital transition-colors whitespace-nowrap shrink-0 py-1 border-b border-transparent hover:border-vital/60"
+            >Horários</a
+          >
+          <a
+            href="#calculadora"
+            class="hover:text-vital transition-colors whitespace-nowrap shrink-0 py-1 border-b border-transparent hover:border-vital/60"
+            >Calculadora</a
+          >
+          <a
+            href="#planos"
+            class="hover:text-vital transition-colors whitespace-nowrap shrink-0 py-1 border-b border-transparent hover:border-vital/60"
+            >Planos</a
+          >
+          <a
+            href="#comunidade"
+            class="hover:text-vital transition-colors whitespace-nowrap shrink-0 py-1 border-b border-transparent hover:border-vital/60"
+            >Comunidade</a
+          >
+        </nav>
+
+        <!-- Zone 3: Single Primary Action + Mobile Drawer Toggle -->
+        <div class="flex items-center gap-3 shrink-0">
+          <button
+            type="button"
+            data-open-trial="header"
+            class="btn-vital px-4 py-2 rounded-lg text-xs sm:text-sm font-bold whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer"
+          >
+            Aula Experimental
+          </button>
+          <button
+            id="mobile-menu-btn"
+            type="button"
+            aria-label="Abrir menu de navegação"
+            aria-expanded="false"
+            class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border border-white/10 text-zinc-200 hover:text-vital hover:border-vital/40 transition-colors cursor-pointer"
+          >
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Drawer -->
+      <div
+        id="mobile-nav-drawer"
+        class="hidden md:hidden border-t border-white/[0.08] bg-carbon/95 backdrop-blur-xl px-4 py-4 space-y-1"
+      >
+        <a href="#ecossistema" class="mobile-nav-link block py-2.5 px-3 rounded-lg text-sm font-medium text-zinc-200 hover:bg-white/5 hover:text-vital">Ecossistema</a>
+        <a href="#horarios" class="mobile-nav-link block py-2.5 px-3 rounded-lg text-sm font-medium text-zinc-200 hover:bg-white/5 hover:text-vital">Horários</a>
+        <a href="#calculadora" class="mobile-nav-link block py-2.5 px-3 rounded-lg text-sm font-medium text-zinc-200 hover:bg-white/5 hover:text-vital">Calculadora</a>
+        <a href="#planos" class="mobile-nav-link block py-2.5 px-3 rounded-lg text-sm font-medium text-zinc-200 hover:bg-white/5 hover:text-vital">Planos</a>
+        <a href="#comunidade" class="mobile-nav-link block py-2.5 px-3 rounded-lg text-sm font-medium text-zinc-200 hover:bg-white/5 hover:text-vital">Comunidade</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- SECTION 1: HERO CINEMATOGRÁFICO WITH PARALLAX, CURSOR SPOTLIGHT & LIVE WIDGET -->
+      <section
+        id="hero"
+        class="relative min-h-screen pt-24 pb-16 flex flex-col justify-end overflow-hidden bg-obsidian"
+      >
+        <!-- Parallax Hero Background Image + Fallback -->
+        <div class="absolute inset-0 z-0 overflow-hidden">
+          <div
+            id="hero-parallax-bg"
+            class="w-full h-[115%] -top-[7%] relative bg-gradient-to-br from-carbon via-obsidian to-graphite"
+          >
+            <img
+              src="/src/assets/images/hero_athletic_studio_1795303483029.jpg"
+              alt="Interior arquitetônico escuro da academia Espaço Vital com iluminação esmeralda e equipamentos de biomecânica"
+              referrerpolicy="no-referrer"
+              class="w-full h-full object-cover object-center opacity-55"
+              onerror="this.style.display='none'"
+            />
+          </div>
+          <!-- Tech Mesh Overlay -->
+          <div class="absolute inset-0 bg-tech-mesh opacity-60 pointer-events-none"></div>
+          <!-- Dynamic Cursor-Reactive Emerald Spotlight -->
+          <div
+            id="hero-spotlight"
+            class="absolute inset-0 pointer-events-none transition-opacity duration-300"
+            style="
+              background: radial-gradient(
+                640px circle at 50% 42%,
+                rgba(0, 230, 118, 0.16),
+                rgba(16, 185, 129, 0.05) 40%,
+                transparent 72%
+              );
+            "
+          ></div>
+          <!-- Measured Contrast Scrim for WCAG AA Legibility -->
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/70 to-obsidian/35 pointer-events-none"
+          ></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-10">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
+            <!-- Hero Editorial Headline & Primary Action -->
+            <div class="lg:col-span-8 space-y-6">
+              <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm font-medium text-zinc-300">
+                <span class="text-vital font-mono uppercase tracking-wider">São Paulo · Jardins</span>
+                <span aria-hidden="true" class="text-zinc-600">/</span>
+                <span>Biomecânica Articulada</span>
+                <span aria-hidden="true" class="text-zinc-600">/</span>
+                <span>Avaliação por Bioimpedância</span>
+              </div>
+
+              <h1
+                class="font-display font-extrabold uppercase tracking-tight text-white leading-[0.94] text-balance"
+                style="font-size: clamp(2.75rem, 6.2vw, 5.5rem)"
+              >
+                <span class="line-mask block"><span class="hero-reveal block">Engenharia do corpo.</span></span>
+                <span class="line-mask block"
+                  ><span class="hero-reveal block text-transparent bg-clip-text bg-gradient-to-r from-vital via-emeraldVital to-limeNeon"
+                    >Energia sem ruído.</span
+                  ></span
+                >
+              </h1>
+
+              <p class="hero-fade max-w-2xl text-base sm:text-lg text-zinc-300 leading-relaxed">
+                Treinamento de força e condicionamento metabólico em um ambiente escuro de alta
+                concentração, com equipamentos calibrados por biomecânica, controle térmico constante e
+                evolução medida em dados reais.
+              </p>
+
+              <div class="hero-fade flex flex-wrap items-center gap-4 pt-2">
+                <button
+                  type="button"
+                  data-open-trial="hero"
+                  class="btn-vital px-6 py-3.5 rounded-xl text-sm sm:text-base font-bold inline-flex items-center gap-2.5 whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                >
+                  <span>Agendar Aula Experimental Grátis</span>
+                  <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </button>
+                <a
+                  href="#horarios"
+                  class="px-5 py-3.5 rounded-xl text-sm sm:text-base font-semibold text-zinc-200 border border-white/15 bg-white/[0.03] hover:bg-white/[0.08] hover:border-vital/40 transition-colors whitespace-nowrap shrink-0"
+                >
+                  Ver Grade de Hoje
+                </a>
+              </div>
+            </div>
+
+            <!-- Floating Live Occupancy & Energy Widget (Prepared for `members_checkins` table) -->
+            <div class="lg:col-span-4 hero-fade">
+              <div class="glass-card rounded-2xl p-6 space-y-5">
+                <div class="flex items-center justify-between gap-4">
+                  <span class="text-xs font-mono uppercase tracking-wider text-zinc-400">
+                    Lotação &amp; Energia Ao Vivo
+                  </span>
+                  <span
+                    id="live-status-label"
+                    class="inline-flex items-center gap-2 text-xs font-mono font-semibold text-vital"
+                  >
+                    <span class="w-2 h-2 rounded-full bg-vital animate-pulse" aria-hidden="true"></span>
+                    Fluxo Moderado Agora
+                  </span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 pt-1">
+                  <div>
+                    <div class="text-xs text-zinc-400">Alunos treinando</div>
+                    <div class="mt-1 font-mono text-3xl font-bold text-white tabular-nums">
+                      <span id="live-members-count">28</span>
+                      <span class="text-sm font-normal text-zinc-500">/ 85</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="text-xs text-zinc-400">Climatização</div>
+                    <div class="mt-1 font-mono text-3xl font-bold text-limeNeon tabular-nums">
+                      <span id="live-temp">21°C</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Energy / Capacity Progress Bar -->
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between text-xs text-zinc-400 font-mono tabular-nums">
+                    <span>Ocupação da sala</span>
+                    <span id="live-occupancy-pct" class="text-zinc-200">33%</span>
+                  </div>
+                  <div class="h-2 w-full rounded-full bg-white/10 overflow-hidden">
+                    <div
+                      id="live-occupancy-bar"
+                      class="h-full rounded-full bg-gradient-to-r from-emeraldVital via-vital to-limeNeon transition-transform duration-500 origin-left"
+                      style="transform: scaleX(0.33)"
+                    ></div>
+                  </div>
+                </div>
+
+                <div class="pt-1 border-t border-white/[0.06] flex items-center justify-between text-xs text-zinc-400">
+                  <span id="live-updated-at" class="font-mono">Sincronizado agora</span>
+                  <button
+                    type="button"
+                    id="refresh-occupancy-btn"
+                    class="text-zinc-300 hover:text-vital font-medium inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                  >
+                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                    <span>Atualizar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full-Width Operational Key Strip Below Hero Split -->
+          <div class="hero-fade mt-12 pt-8 border-t border-white/[0.08] grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div>
+              <div class="font-mono text-2xl sm:text-3xl font-bold text-white tabular-nums">1.400 m²</div>
+              <div class="text-xs sm:text-sm text-zinc-400 mt-1">Área útil de treino articulado</div>
+            </div>
+            <div>
+              <div class="font-mono text-2xl sm:text-3xl font-bold text-white tabular-nums">05:30 – 23:00</div>
+              <div class="text-xs sm:text-sm text-zinc-400 mt-1">Segunda a sexta sem interrupção</div>
+            </div>
+            <div>
+              <div class="font-mono text-2xl sm:text-3xl font-bold text-vital tabular-nums">12 atletas</div>
+              <div class="text-xs sm:text-sm text-zinc-400 mt-1">Limite máximo por turma coletiva</div>
+            </div>
+            <div>
+              <div class="font-mono text-2xl sm:text-3xl font-bold text-white tabular-nums">100% Dados</div>
+              <div class="text-xs sm:text-sm text-zinc-400 mt-1">Bioimpedância segmentada inclusa</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: KINETIC INFINITE MARQUEE TICKER -->
+      <section aria-label="Modalidades em Destaque" class="relative py-5 bg-carbon border-y border-white/[0.08] overflow-hidden">
+        <div id="marquee-track" class="flex items-center gap-8 whitespace-nowrap will-change-transform">
+          <div class="marquee-group flex items-center gap-8 shrink-0">
+            <span class="font-display italic font-extrabold text-2xl sm:text-3xl tracking-wide text-white uppercase"
+              >Musculação de Alta Performance</span
+            >
+            <span class="text-vital font-mono text-lg" aria-hidden="true">•</span>
+            <span class="font-display italic font-extrabold text-2xl sm:text-3xl tracking-wide text-zinc-400 uppercase"
+              >Funcional</span
+            >
+            <span class="text-vital font-mono text-lg" aria-hidden="true">•</span>
+            <span class="font-display italic font-extrabold text-2xl sm:text-3xl tracking-wide text-vital uppercase"
+              >Spinning</span
+            >
+            <span class="text-vital font-mono text-lg" aria-hidden="true">•</span>
+            <span class="font-display italic font-extrabold text-2xl sm:text-3xl tracking-wide text-white uppercase"
+              >HIIT</span
+            >
+            <span class="text-vital font-mono text-lg" aria-hidden="true">•</span>
+            <span class="font-display italic font-extrabold text-2xl sm:text-3xl tracking-wide text-zinc-400 uppercase"
+              >Avaliação Bioimpedância</span
+            >
+            <span class="text-vital font-mono text-lg" aria-hidden="true">•</span>
+            <span class="font-display italic font-extrabold text-2xl sm:text-3xl tracking-wide text-limeNeon uppercase"
+              >Espaço Vital</span
+            >
+            <span class="text-vital font-mono text-lg" aria-hidden="true">•</span>
+          </div>
+          <!-- Duplicated seamlessly via JS as well -->
+        </div>
+      </section>
+
+      <!-- SECTION 3: ASYMMETRIC BENTO GRID ("O Ecossistema Espaço Vital") -->
+      <section id="ecossistema" class="py-24 bg-obsidian relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div class="space-y-3 max-w-2xl">
+              <div class="text-xs font-mono uppercase tracking-widest text-vital">
+                Arquitetura de Treinamento
+              </div>
+              <h2
+                class="font-display font-extrabold uppercase tracking-tight text-white text-balance"
+                style="font-size: clamp(2rem, 4vw, 3.25rem)"
+              >
+                O Ecossistema Espaço Vital
+              </h2>
+            </div>
+            <p class="text-sm sm:text-base text-zinc-400 max-w-md leading-relaxed">
+              Cada zona foi projetada para eliminar filas e otimizar estímulos fisiológicos,
+              unindo biomecânica de precisão com recuperação orientada.
+            </p>
+          </div>
+
+          <!-- Bento Grid: Asymmetric 6-column structure -->
+          <div class="grid grid-cols-1 md:grid-cols-6 gap-5">
+            <!-- Card 1 (2x2 Hero Bento): Sala de Musculação & Biomecânica -->
+            <article
+              class="bento-card glass-card rounded-2xl overflow-hidden md:col-span-4 md:row-span-2 flex flex-col justify-between min-h-[380px] lg:min-h-[460px]"
+            >
+              <div class="relative h-64 sm:h-72 lg:h-80 w-full overflow-hidden bg-gradient-to-br from-graphite to-obsidian">
+                <img
+                  src="/src/assets/images/bento_musculacao_1795303483668.jpg"
+                  alt="Sala de musculação com equipamentos articulados e anilhas calibradas na Espaço Vital"
+                  referrerpolicy="no-referrer"
+                  class="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-[1.03]"
+                  onerror="this.style.display='none'"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-graphite via-graphite/20 to-transparent"></div>
+              </div>
+              <div class="p-6 sm:p-8 space-y-3">
+                <div class="flex items-center gap-2 text-xs font-mono text-zinc-400">
+                  <span class="text-vital">01. Força &amp; Biomecânica</span>
+                  <span aria-hidden="true">·</span>
+                  <span>48 Estações Articuladas</span>
+                  <span aria-hidden="true">·</span>
+                  <span>Anilhas Calibradas</span>
+                </div>
+                <h3 class="font-display text-2xl sm:text-3xl font-bold text-white uppercase tracking-tight">
+                  Sala de Musculação &amp; Biomecânica
+                </h3>
+                <p class="text-sm sm:text-base text-zinc-300 leading-relaxed max-w-2xl">
+                  Equipamentos com curvas de resistência convergentes e ajustes milimétricos que
+                  respeitam sua anatomia articular, maximizando recrutamento muscular com menor
+                  sobrecarga tendínea.
+                </p>
+              </div>
+            </article>
+
+            <!-- Card 2 (2x1): Arena Cardio & HIIT -->
+            <article class="bento-card glass-card rounded-2xl overflow-hidden md:col-span-2 flex flex-col justify-between">
+              <div class="relative h-44 w-full overflow-hidden bg-gradient-to-br from-graphite to-obsidian">
+                <img
+                  src="/src/assets/images/bento_cardio_hiit_1795303482821.jpg"
+                  alt="Arena Cardio e HIIT com esteiras curvas de sprint e kettlebells"
+                  referrerpolicy="no-referrer"
+                  class="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-[1.03]"
+                  onerror="this.style.display='none'"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-graphite via-graphite/25 to-transparent"></div>
+              </div>
+              <div class="p-6 space-y-2">
+                <div class="text-xs font-mono text-vital">02. Potência Metabólica</div>
+                <h3 class="font-display text-xl sm:text-2xl font-bold text-white uppercase tracking-tight">
+                  Arena Cardio &amp; HIIT
+                </h3>
+                <p class="text-sm text-zinc-300 leading-relaxed">
+                  Esteiras curvas não motorizadas, remos e ski-ergs para picos de VO2 máx e alta
+                  queima calórica pós-treino.
+                </p>
+              </div>
+            </article>
+
+            <!-- Card 3 (2x1): Estúdio Coletivo & Mobilidade -->
+            <article class="bento-card glass-card rounded-2xl overflow-hidden md:col-span-2 flex flex-col justify-between">
+              <div class="relative h-44 w-full overflow-hidden bg-gradient-to-br from-graphite to-obsidian">
+                <img
+                  src="/src/assets/images/bento_estudio_coletivo_1795303483216.jpg"
+                  alt="Estúdio coletivo de spinning, funcional e mobilidade na Espaço Vital"
+                  referrerpolicy="no-referrer"
+                  class="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-[1.03]"
+                  onerror="this.style.display='none'"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-graphite via-graphite/25 to-transparent"></div>
+              </div>
+              <div class="p-6 space-y-2">
+                <div class="text-xs font-mono text-vital">03. Movimento Integrado</div>
+                <h3 class="font-display text-xl sm:text-2xl font-bold text-white uppercase tracking-tight">
+                  Estúdio Coletivo &amp; Mobilidade
+                </h3>
+                <p class="text-sm text-zinc-300 leading-relaxed">
+                  Turmas reduzidas de Funcional, Spinning em potência, Yoga Atlético e Core com
+                  correção técnica próxima.
+                </p>
+              </div>
+            </article>
+
+            <!-- Card 4 (3 columns bottom): Avaliação Física & Bioimpedância -->
+            <article class="bento-card glass-card rounded-2xl overflow-hidden md:col-span-3 grid grid-cols-1 sm:grid-cols-12 items-stretch">
+              <div class="sm:col-span-5 relative min-h-[210px] bg-gradient-to-br from-graphite to-obsidian">
+                <img
+                  src="/src/assets/images/bento_bioimpedancia_1795303483369.jpg"
+                  alt="Sala de avaliação física e bioimpedância segmentada Espaço Vital"
+                  referrerpolicy="no-referrer"
+                  class="w-full h-full object-cover object-center"
+                  onerror="this.style.display='none'"
+                />
+              </div>
+              <div class="sm:col-span-7 p-6 flex flex-col justify-between space-y-4">
+                <div class="space-y-2">
+                  <div class="text-xs font-mono text-vital">04. Diagnóstico &amp; Dados</div>
+                  <h3 class="font-display text-xl sm:text-2xl font-bold text-white uppercase tracking-tight">
+                    Avaliação Física &amp; Bioimpedância
+                  </h3>
+                  <p class="text-sm text-zinc-300 leading-relaxed">
+                    Mapeamento tetrapolar de massa magra por segmento, gordura visceral e taxa
+                    metabólica basal a cada ciclo de treino.
+                  </p>
+                </div>
+                <div class="pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-zinc-400 tabular-nums">
+                  <span>Precisão 98,4%</span>
+                  <a href="#calculadora" class="text-vital hover:underline font-sans font-semibold">
+                    Simular diagnóstico &rarr;
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Card 5 (3 columns bottom): Corpo Técnico & Especialistas (Populated by DataService.fetchTrainers) -->
+            <article class="bento-card glass-card rounded-2xl p-6 md:col-span-3 flex flex-col justify-between space-y-5">
+              <div class="space-y-1.5">
+                <div class="text-xs font-mono text-vital">05. Equipe Técnica</div>
+                <h3 class="font-display text-xl sm:text-2xl font-bold text-white uppercase tracking-tight">
+                  Treinadores Especialistas
+                </h3>
+              </div>
+              <div id="trainers-list" class="divide-y divide-white/[0.06]">
+                <!-- Populated dynamically via DataService.fetchTrainers() -->
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: INTERACTIVE REAL-TIME CLASS SCHEDULE (`class_schedule`) -->
+      <section id="horarios" class="py-24 bg-carbon border-y border-white/[0.06]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+            <div class="space-y-3">
+              <div class="text-xs font-mono uppercase tracking-widest text-vital">
+                Grade Semanal Sincronizada
+              </div>
+              <h2
+                class="font-display font-extrabold uppercase tracking-tight text-white text-balance"
+                style="font-size: clamp(2rem, 4vw, 3.25rem)"
+              >
+                Horários &amp; Vagas em Tempo Real
+              </h2>
+            </div>
+
+            <!-- Interactive Segmented Day Selector with Sliding Pill Indicator -->
+            <div
+              role="tablist"
+              aria-label="Dias da semana"
+              class="relative inline-flex items-center p-1.5 rounded-xl bg-obsidian border border-white/[0.08] overflow-x-auto max-w-full"
+            >
+              <div
+                id="day-pill-indicator"
+                aria-hidden="true"
+                class="absolute top-1.5 bottom-1.5 left-1.5 rounded-lg bg-vital transition-transform duration-300 ease-out pointer-events-none"
+                style="width: 56px; transform: translateX(0px)"
+              ></div>
+              <button type="button" role="tab" data-day="SEG" class="day-tab relative z-10 w-14 py-2 text-xs font-mono font-bold text-obsidian transition-colors whitespace-nowrap shrink-0 cursor-pointer">SEG</button>
+              <button type="button" role="tab" data-day="TER" class="day-tab relative z-10 w-14 py-2 text-xs font-mono font-bold text-zinc-400 hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer">TER</button>
+              <button type="button" role="tab" data-day="QUA" class="day-tab relative z-10 w-14 py-2 text-xs font-mono font-bold text-zinc-400 hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer">QUA</button>
+              <button type="button" role="tab" data-day="QUI" class="day-tab relative z-10 w-14 py-2 text-xs font-mono font-bold text-zinc-400 hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer">QUI</button>
+              <button type="button" role="tab" data-day="SEX" class="day-tab relative z-10 w-14 py-2 text-xs font-mono font-bold text-zinc-400 hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer">SEX</button>
+              <button type="button" role="tab" data-day="SAB" class="day-tab relative z-10 w-14 py-2 text-xs font-mono font-bold text-zinc-400 hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer">SÁB</button>
+            </div>
+          </div>
+
+          <!-- Schedule List Container -->
+          <div id="schedule-container" class="space-y-3" aria-live="polite">
+            <!-- Rendered dynamically via DataService.fetchScheduleByDay(day) -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: INTERACTIVE GAMIFIED IMC & TRAINING GOAL CALCULATOR -->
+      <section id="calculadora" class="py-24 bg-obsidian relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+            <!-- Left Column: Interactive Sliders & Goal Selector -->
+            <div class="lg:col-span-6 glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between space-y-8">
+              <div class="space-y-2">
+                <div class="text-xs font-mono uppercase tracking-widest text-vital">
+                  Diagnóstico Biométrico Instantâneo
+                </div>
+                <h2
+                  class="font-display font-extrabold uppercase tracking-tight text-white text-balance"
+                  style="font-size: clamp(1.85rem, 3.2vw, 2.75rem)"
+                >
+                  Calcule seu IMC &amp; Rota de Treino
+                </h2>
+                <p class="text-sm text-zinc-400 leading-relaxed">
+                  Ajuste seus parâmetros físicos e selecione seu foco principal para receber uma
+                  recomendação de protocolo e plano ideal.
+                </p>
+              </div>
+
+              <div class="space-y-6">
+                <!-- Weight Slider -->
+                <div class="space-y-2.5">
+                  <div class="flex items-center justify-between">
+                    <label for="calc-weight" class="text-sm font-medium text-zinc-200">Peso Atual</label>
+                    <span class="font-mono text-xl font-bold text-vital tabular-nums">
+                      <span id="calc-weight-val">76</span> kg
+                    </span>
+                  </div>
+                  <input
+                    id="calc-weight"
+                    type="range"
+                    min="45"
+                    max="150"
+                    value="76"
+                    class="vital-range"
+                  />
+                  <div class="flex justify-between text-[11px] font-mono text-zinc-500">
+                    <span>45 kg</span>
+                    <span>100 kg</span>
+                    <span>150 kg</span>
+                  </div>
+                </div>
+
+                <!-- Height Slider -->
+                <div class="space-y-2.5">
+                  <div class="flex items-center justify-between">
+                    <label for="calc-height" class="text-sm font-medium text-zinc-200">Altura</label>
+                    <span class="font-mono text-xl font-bold text-limeNeon tabular-nums">
+                      <span id="calc-height-val">175</span> cm
+                    </span>
+                  </div>
+                  <input
+                    id="calc-height"
+                    type="range"
+                    min="145"
+                    max="210"
+                    value="175"
+                    class="vital-range"
+                  />
+                  <div class="flex justify-between text-[11px] font-mono text-zinc-500">
+                    <span>145 cm</span>
+                    <span>178 cm</span>
+                    <span>210 cm</span>
+                  </div>
+                </div>
+
+                <!-- Goal Segmented Control -->
+                <div class="space-y-2.5">
+                  <span class="block text-sm font-medium text-zinc-200">Objetivo Principal</span>
+                  <div class="grid grid-cols-3 gap-2 p-1.5 rounded-xl bg-obsidian border border-white/[0.08]">
+                    <button
+                      type="button"
+                      data-goal="Hipertrofia"
+                      class="goal-btn py-2.5 px-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors bg-vital text-obsidian whitespace-nowrap truncate cursor-pointer"
+                    >
+                      Hipertrofia
+                    </button>
+                    <button
+                      type="button"
+                      data-goal="Emagrecimento"
+                      class="goal-btn py-2.5 px-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors text-zinc-400 hover:text-white whitespace-nowrap truncate cursor-pointer"
+                    >
+                      Emagrecimento
+                    </button>
+                    <button
+                      type="button"
+                      data-goal="Condicionamento"
+                      class="goal-btn py-2.5 px-2 rounded-lg text-xs sm:text-sm font-semibold transition-colors text-zinc-400 hover:text-white whitespace-nowrap truncate cursor-pointer"
+                    >
+                      Condicionamento
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Live Diagnostic Gauge & Recommended Plan -->
+            <div class="lg:col-span-6 glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between space-y-6">
+              <div class="space-y-5">
+                <div class="flex items-start justify-between gap-4 border-b border-white/[0.08] pb-5">
+                  <div>
+                    <div class="text-xs font-mono uppercase tracking-wider text-zinc-400">Índice de Massa Corporal</div>
+                    <div class="mt-1 flex items-baseline gap-3">
+                      <span id="calc-imc-value" class="font-mono text-5xl font-bold text-white tabular-nums">24.8</span>
+                      <span id="calc-imc-class" class="text-sm font-semibold text-vital">Peso Ideal</span>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <div class="text-xs font-mono uppercase tracking-wider text-zinc-400">Meta Semanal</div>
+                    <div id="calc-weekly-freq" class="mt-1 font-mono text-lg font-bold text-limeNeon tabular-nums">
+                      4–5 treinos / sem
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Animated Gauge Bar -->
+                <div class="space-y-2">
+                  <div class="relative h-3 w-full rounded-full bg-white/10 overflow-hidden">
+                    <div
+                      id="calc-gauge-bar"
+                      class="h-full rounded-full bg-gradient-to-r from-emeraldVital via-vital to-limeNeon transition-transform duration-300 origin-left"
+                      style="transform: scaleX(0.55)"
+                    ></div>
+                  </div>
+                  <div class="flex justify-between text-[11px] font-mono text-zinc-500">
+                    <span>Abaixo (&lt;18.5)</span>
+                    <span>Ideal (18.5–24.9)</span>
+                    <span>Sobrepeso (25–29.9)</span>
+                    <span>30+</span>
+                  </div>
+                </div>
+
+                <!-- Protocol Recommendation -->
+                <div class="p-5 rounded-xl bg-obsidian/70 border border-white/[0.07] space-y-2">
+                  <div class="flex items-center justify-between text-xs font-mono text-zinc-400">
+                    <span>Protocolo Sugerido</span>
+                    <span id="calc-plan-badge" class="text-vital font-semibold">Plano Vital Pro</span>
+                  </div>
+                  <h3 id="calc-protocol-title" class="font-display text-xl font-bold text-white uppercase">
+                    Força Estruturada + Bioimpedância Trimestral
+                  </h3>
+                  <p id="calc-protocol-desc" class="text-sm text-zinc-300 leading-relaxed">
+                    Combinação de 4 sessões de musculação biomecânica com 1 sessão metabólica de alta
+                    eficiência para ganho de massa magra limpa.
+                  </p>
+                </div>
+              </div>
+
+              <div class="space-y-3 pt-2">
+                <div
+                  id="calc-saved-feedback"
+                  class="hidden text-xs font-mono text-vital bg-vital/10 border border-vital/30 rounded-lg px-3 py-2"
+                >
+                  Diagnóstico salvo no histórico. Abrindo agendamento com seus dados...
+                </div>
+                <button
+                  type="button"
+                  id="save-imc-btn"
+                  class="btn-vital w-full py-3.5 px-6 rounded-xl text-sm sm:text-base font-bold inline-flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span>Salvar Resultado e Agendar Aula Experimental</span>
+                  <i data-lucide="activity" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 6: PLANS & SUBSCRIPTIONS WITH ANIMATED MONTHLY / ANNUAL TOGGLE -->
+      <section id="planos" class="py-24 bg-carbon border-y border-white/[0.06]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col items-center text-center space-y-5 mb-14">
+            <div class="text-xs font-mono uppercase tracking-widest text-vital">
+              Assinaturas Transparentes
+            </div>
+            <h2
+              class="font-display font-extrabold uppercase tracking-tight text-white text-balance"
+              style="font-size: clamp(2rem, 4.2vw, 3.5rem)"
+            >
+              Escolha seu Nível de Performance
+            </h2>
+
+            <!-- Interactive Billing Toggle -->
+            <div class="inline-flex items-center p-1.5 rounded-xl bg-obsidian border border-white/[0.08] gap-1">
+              <button
+                type="button"
+                id="billing-monthly"
+                data-billing="monthly"
+                class="billing-toggle px-5 py-2.5 rounded-lg text-xs sm:text-sm font-semibold bg-vital text-obsidian transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                Plano Mensal
+              </button>
+              <button
+                type="button"
+                id="billing-annual"
+                data-billing="annual"
+                class="billing-toggle px-5 py-2.5 rounded-lg text-xs sm:text-sm font-semibold text-zinc-300 hover:text-white transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                Plano Anual · Economize 25%
+              </button>
+            </div>
+          </div>
+
+          <!-- 3 Plans Grid (Rendered dynamically via DataService.fetchPlans) -->
+          <div id="plans-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 7: TRANSFORMATIONS CAROUSEL & COMMUNITY PROOF -->
+      <section id="comunidade" class="py-24 bg-obsidian">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
+            <div class="space-y-3 max-w-2xl">
+              <div class="text-xs font-mono uppercase tracking-widest text-vital">
+                Resultados Reais em Dados
+              </div>
+              <h2
+                class="font-display font-extrabold uppercase tracking-tight text-white text-balance"
+                style="font-size: clamp(2rem, 4vw, 3.25rem)"
+              >
+                Comunidade &amp; Transformações
+              </h2>
+            </div>
+
+            <div class="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                id="carousel-prev"
+                aria-label="Depoimento anterior"
+                class="w-11 h-11 rounded-xl border border-white/15 bg-graphite/70 text-zinc-200 hover:text-vital hover:border-vital/50 flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+              </button>
+              <button
+                type="button"
+                id="carousel-next"
+                aria-label="Próximo depoimento"
+                class="w-11 h-11 rounded-xl border border-white/15 bg-graphite/70 text-zinc-200 hover:text-vital hover:border-vital/50 flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="testimonials-track"
+            class="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2"
+          >
+            <!-- Card 1 -->
+            <article class="glass-card rounded-2xl p-7 min-w-[300px] sm:min-w-[380px] lg:min-w-[400px] flex-1 snap-start flex flex-col justify-between space-y-6">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between text-xs font-mono text-vital">
+                  <span>-11,4 kg de gordura corporal</span>
+                  <span class="text-zinc-400">16 semanas</span>
+                </div>
+                <p class="text-sm sm:text-base text-zinc-200 leading-relaxed">
+                  "Antes eu desistia em dois meses por dores no joelho e falta de rotina. Na
+                  Espaço Vital ajustaram minha biomecânica no leg press e acompanhei cada exame de
+                  bioimpedância até bater minha melhor composição corporal aos 38 anos."
+                </p>
+              </div>
+              <div class="pt-4 border-t border-white/[0.08]">
+                <div class="font-semibold text-white">Rafael Nogueira</div>
+                <div class="text-xs text-zinc-400 mt-0.5">Arquiteto · Plano Vital Pro</div>
+              </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="glass-card rounded-2xl p-7 min-w-[300px] sm:min-w-[380px] lg:min-w-[400px] flex-1 snap-start flex flex-col justify-between space-y-6">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between text-xs font-mono text-vital">
+                  <span>+4,2 kg de massa magra</span>
+                  <span class="text-zinc-400">5 meses</span>
+                </div>
+                <p class="text-sm sm:text-base text-zinc-200 leading-relaxed">
+                  "O ambiente escuro e silencioso às 6h da manhã mudou minha consistência. Sem
+                  música estridente ou espera em aparelhos, consigo fechar meu treino de força e
+                  partir para o consultório com energia estável o dia inteiro."
+                </p>
+              </div>
+              <div class="pt-4 border-t border-white/[0.08]">
+                <div class="font-semibold text-white">Camila Vasconcelos</div>
+                <div class="text-xs text-zinc-400 mt-0.5">Cirurgiã-Dentista · Plano Black VIP</div>
+              </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="glass-card rounded-2xl p-7 min-w-[300px] sm:min-w-[380px] lg:min-w-[400px] flex-1 snap-start flex flex-col justify-between space-y-6">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between text-xs font-mono text-vital">
+                  <span>VO2 máx +18% · 10km em 43min</span>
+                  <span class="text-zinc-400">12 semanas</span>
+                </div>
+                <p class="text-sm sm:text-base text-zinc-200 leading-relaxed">
+                  "Combinei o Spinning de terça e quinta com os treinos de força para corrida. As
+                  turmas com limite de 12 alunos fazem toda diferença porque o coach corrige postura
+                  e cadência em tempo real."
+                </p>
+              </div>
+              <div class="pt-4 border-t border-white/[0.08]">
+                <div class="font-semibold text-white">Henrique Alencar</div>
+                <div class="text-xs text-zinc-400 mt-0.5">Engenheiro de Software · Plano Vital Pro</div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 8: ARCHITECTURAL LOCATION MAP, HOURS & CONTACT -->
+      <section class="py-20 bg-carbon border-t border-white/[0.06]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            <!-- Stylized Dark Architectural Vector Map -->
+            <div class="lg:col-span-7 glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between overflow-hidden min-h-[320px]">
+              <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                <div>
+                  <div class="text-xs font-mono uppercase tracking-wider text-vital">Unidade Flagship</div>
+                  <h3 class="font-display text-2xl font-bold text-white uppercase mt-1">
+                    Alameda Lorena, 1480 · Jardins, São Paulo
+                  </h3>
+                </div>
+                <a
+                  href="https://maps.google.com/?q=Alameda+Lorena+1480+Jardins+Sao+Paulo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-xs font-mono text-zinc-300 hover:text-vital border border-white/15 px-3 py-2 rounded-lg transition-colors whitespace-nowrap shrink-0"
+                >
+                  Abrir rota no mapa &rarr;
+                </a>
+              </div>
+
+              <!-- Dark Mode Architectural Grid Map SVG -->
+              <div class="relative w-full h-56 rounded-xl bg-obsidian border border-white/[0.08] overflow-hidden">
+                <svg viewBox="0 0 600 220" class="w-full h-full" fill="none" aria-label="Mapa estilizado da unidade Espaço Vital nos Jardins">
+                  <!-- Street Grid -->
+                  <path d="M0 55 H600 M0 115 H600 M0 175 H600" stroke="rgba(255,255,255,0.08)" stroke-width="2" />
+                  <path d="M110 0 V220 M250 0 V220 M410 0 V220 M520 0 V220" stroke="rgba(255,255,255,0.08)" stroke-width="2" />
+                  <!-- Main Avenue Highlight -->
+                  <path d="M0 115 H600" stroke="rgba(0,230,118,0.32)" stroke-width="4" />
+                  <path d="M250 0 V220" stroke="rgba(255,255,255,0.14)" stroke-width="3" />
+                  <!-- Street Labels -->
+                  <text x="24" y="106" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="10">AL. LORENA</text>
+                  <text x="260" y="24" fill="#9CA3AF" font-family="JetBrains Mono, monospace" font-size="10">R. HADDOCK LOBO</text>
+                  <text x="420" y="168" fill="#6B7280" font-family="JetBrains Mono, monospace" font-size="10">METRÔ OSCAR FREIRE (4 MIN)</text>
+                  <!-- Flagship Pin -->
+                  <circle cx="250" cy="115" r="24" fill="rgba(0,230,118,0.14)" />
+                  <circle cx="250" cy="115" r="8" fill="#00E676" />
+                  <rect x="268" y="96" width="118" height="24" rx="6" fill="#141816" stroke="rgba(0,230,118,0.5)" />
+                  <text x="278" y="112" fill="#FFFFFF" font-family="Plus Jakarta Sans, sans-serif" font-size="11" font-weight="700">ESPAÇO VITAL</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Hours & Direct Concierge -->
+            <div class="lg:col-span-5 glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between space-y-6">
+              <div class="space-y-4">
+                <div class="text-xs font-mono uppercase tracking-wider text-vital">Funcionamento</div>
+                <div class="space-y-3 divide-y divide-white/[0.07] text-sm">
+                  <div class="flex items-center justify-between pt-1">
+                    <span class="text-zinc-300">Segunda a Sexta</span>
+                    <span class="font-mono font-semibold text-white tabular-nums">05:30 – 23:00</span>
+                  </div>
+                  <div class="flex items-center justify-between pt-3">
+                    <span class="text-zinc-300">Sábados e Feriados</span>
+                    <span class="font-mono font-semibold text-white tabular-nums">07:00 – 18:00</span>
+                  </div>
+                  <div class="flex items-center justify-between pt-3">
+                    <span class="text-zinc-300">Domingos</span>
+                    <span class="font-mono font-semibold text-white tabular-nums">08:00 – 14:00</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-4 border-t border-white/[0.08] space-y-3">
+                <p class="text-xs text-zinc-400">
+                  Estacionamento com manobrista no local e bicicletário coberto.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    data-open-trial="footer-cta"
+                    class="btn-vital flex-1 py-3 px-4 rounded-xl text-sm font-bold whitespace-nowrap cursor-pointer"
+                  >
+                    Agendar Visita
+                  </button>
+                  <a
+                    href="https://wa.me/5511999990000?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20planos%20da%20Espa%C3%A7o%20Vital."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="py-3 px-4 rounded-xl text-sm font-semibold text-zinc-100 border border-white/15 hover:border-vital/50 hover:text-vital transition-colors inline-flex items-center gap-2 whitespace-nowrap"
+                  >
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span>WhatsApp</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Quiet Architectural Footer -->
+    <footer class="bg-obsidian border-t border-white/[0.08] py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div class="space-y-1">
+          <div class="font-display text-xl font-extrabold text-white tracking-tight">Espaço Vital</div>
+          <p class="text-xs text-zinc-500">
+            CREF 048291-PJ/SP · Alameda Lorena, 1480, Jardins, São Paulo
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-6 text-xs text-zinc-400">
+          <a href="#ecossistema" class="hover:text-white transition-colors">Ecossistema</a>
+          <a href="#horarios" class="hover:text-white transition-colors">Horários</a>
+          <a href="#calculadora" class="hover:text-white transition-colors">Calculadora</a>
+          <a href="#planos" class="hover:text-white transition-colors">Planos</a>
+          <span class="text-zinc-600">&copy; 2026 Espaço Vital</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Compact Floating WhatsApp Concierge Button (Respects mobile <=15% sticky height cap) -->
+    <a
+      href="https://wa.me/5511999990000?text=Ol%C3%A1!%20Quero%20agendar%20minha%20aula%20experimental%20na%20Espa%C3%A7o%20Vital."
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Atendimento direto no WhatsApp da Espaço Vital"
+      class="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2.5 px-4 py-3 rounded-full bg-graphite/95 border border-vital/45 text-white shadow-lg backdrop-blur-xl hover:border-vital hover:text-vital transition-colors"
+    >
+      <i data-lucide="message-circle" class="w-5 h-5 text-vital"></i>
+      <span class="hidden sm:inline text-xs font-semibold whitespace-nowrap">Falar no WhatsApp</span>
+    </a>
+
+    <!-- MODAL: AULA EXPERIMENTAL GRÁTIS (Dark Glass + Validated Form + Protocol Confirmation) -->
+    <div
+      id="trial-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="trial-modal-title"
+      class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4 bg-black/75 backdrop-blur-md"
+    >
+      <div
+        id="trial-modal-panel"
+        class="relative w-full max-w-lg rounded-2xl bg-graphite/95 backdrop-blur-2xl border border-white/15 p-6 sm:p-8 shadow-2xl"
+      >
+        <button
+          type="button"
+          id="close-trial-modal"
+          aria-label="Fechar janela de agendamento"
+          class="absolute top-5 right-5 w-9 h-9 rounded-lg border border-white/10 text-zinc-400 hover:text-white hover:border-white/30 flex items-center justify-center transition-colors cursor-pointer"
+        >
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+
+        <!-- Form View -->
+        <div id="trial-form-view" class="space-y-5">
+          <div class="space-y-1.5 pr-8">
+            <div class="text-xs font-mono uppercase tracking-wider text-vital">
+              Agendamento Prioritário
+            </div>
+            <h3 id="trial-modal-title" class="font-display text-2xl sm:text-3xl font-extrabold text-white uppercase">
+              Aula Experimental Grátis
+            </h3>
+            <p class="text-sm text-zinc-400">
+              Preencha seus dados para reservar seu horário e receber avaliação inicial de biomecânica.
+            </p>
+          </div>
+
+          <!-- Context Summary Banner (Dynamic if triggered from Class, Plan, or IMC Calculator) -->
+          <div
+            id="trial-context-banner"
+            class="hidden rounded-xl bg-obsidian/80 border border-vital/30 px-4 py-3 text-xs font-mono text-zinc-200 space-y-1"
+          ></div>
+
+          <form id="trial-booking-form" novalidate class="space-y-4">
+            <div class="space-y-1.5">
+              <label for="trial-name" class="block text-xs font-medium text-zinc-300">Nome completo</label>
+              <input
+                id="trial-name"
+                name="full_name"
+                type="text"
+                required
+                placeholder="Ex.: Mariana Duarte"
+                class="w-full rounded-xl bg-obsidian border border-white/15 px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-vital"
+              />
+            </div>
+
+            <div class="space-y-1.5">
+              <label for="trial-whatsapp" class="block text-xs font-medium text-zinc-300">WhatsApp com DDD</label>
+              <input
+                id="trial-whatsapp"
+                name="whatsapp"
+                type="tel"
+                required
+                placeholder="(11) 99999-9999"
+                class="w-full rounded-xl bg-obsidian border border-white/15 px-4 py-3 text-sm font-mono text-white placeholder-zinc-500 focus:outline-none focus:border-vital"
+              />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label for="trial-goal" class="block text-xs font-medium text-zinc-300">Objetivo</label>
+                <select
+                  id="trial-goal"
+                  name="goal"
+                  class="w-full rounded-xl bg-obsidian border border-white/15 px-3.5 py-3 text-sm text-white focus:outline-none focus:border-vital"
+                >
+                  <option value="Hipertrofia">Hipertrofia</option>
+                  <option value="Emagrecimento">Emagrecimento</option>
+                  <option value="Condicionamento">Condicionamento</option>
+                  <option value="Mobilidade e Saúde">Mobilidade e Saúde</option>
+                </select>
+              </div>
+
+              <div class="space-y-1.5">
+                <label for="trial-shift" class="block text-xs font-medium text-zinc-300">Turno Preferido</label>
+                <select
+                  id="trial-shift"
+                  name="preferred_shift"
+                  class="w-full rounded-xl bg-obsidian border border-white/15 px-3.5 py-3 text-sm text-white focus:outline-none focus:border-vital"
+                >
+                  <option value="Manhã (06h–11h)">Manhã (06h–11h)</option>
+                  <option value="Tarde (12h–17h)">Tarde (12h–17h)</option>
+                  <option value="Noite (18h–22h)">Noite (18h–22h)</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="trial-form-error" class="hidden text-xs font-medium text-rose-400"></div>
+
+            <button
+              type="submit"
+              id="trial-submit-btn"
+              class="btn-vital w-full py-3.5 px-6 rounded-xl text-sm font-bold inline-flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Confirmar Pré-Agendamento</span>
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </button>
+          </form>
+        </div>
+
+        <!-- Confirmation View -->
+        <div id="trial-success-view" class="hidden space-y-6 py-2">
+          <div class="w-12 h-12 rounded-2xl bg-vital/15 border border-vital/40 flex items-center justify-center text-vital">
+            <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+          </div>
+          <div class="space-y-2">
+            <div class="text-xs font-mono uppercase tracking-wider text-vital">Reserva Registrada</div>
+            <h3 class="font-display text-2xl sm:text-3xl font-extrabold text-white uppercase">
+              Horário Pré-Reservado
+            </h3>
+            <p class="text-sm text-zinc-300 leading-relaxed">
+              Sua solicitação foi salva com sucesso. Apresente o protocolo abaixo na recepção ou
+              finalize direto no WhatsApp da nossa equipe.
+            </p>
+          </div>
+
+          <div class="rounded-xl bg-obsidian border border-white/10 p-4 flex items-center justify-between">
+            <span class="text-xs font-mono text-zinc-400">Protocolo</span>
+            <span id="trial-protocol-code" class="font-mono text-lg font-bold text-vital tabular-nums">
+              EV-2026-0000
+            </span>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a
+              id="trial-whatsapp-confirm"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-vital flex-1 py-3.5 px-5 rounded-xl text-sm font-bold inline-flex items-center justify-center gap-2"
+            >
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span>Confirmar no WhatsApp</span>
+            </a>
+            <button
+              type="button"
+              id="trial-done-btn"
+              class="py-3.5 px-5 rounded-xl text-sm font-semibold text-zinc-300 border border-white/15 hover:text-white transition-colors cursor-pointer"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULAR VANILLA JS: DATA LAYER (SUPABASE-READY) & UI CONTROLLERS -->
+    <script>
+      /**
+       * ============================================================================
+       * ESPAÇO VITAL — DATA SERVICE (Arquitetura Desacoplada Pronta para Supabase)
+       * ============================================================================
+       * Tabelas PostgreSQL / PostgREST espelhadas:
+       *  1. plans                     (id, slug, name, subtitle, price_monthly, price_annual, is_featured, benefits[])
+       *  2. modalities                (id, slug, title, category, description)
+       *  3. trainers                  (id, full_name, specialty, cref, shift)
+       *  4. class_schedule            (id, day_of_week, start_time, class_name, coach_name, duration_min, intensity, capacity, spots_remaining)
+       *  5. members_checkins          (id, active_members_count, max_capacity, temperature_c, status_label, updated_at)
+       *  6. leads_experimental_class  (id, protocol_code, full_name, whatsapp, goal, preferred_shift, selected_plan, selected_class_id, imc_snapshot, created_at)
+       */
+      const DataService = (() => {
+        // --------------------------------------------------------------------------
+        // CONFIGURAÇÃO SUPABASE / POSTGREST (Preencha para ativar o banco real)
+        // --------------------------------------------------------------------------
+        const SUPABASE_CONFIG = {
+          // SUPABASE_URL: 'https://seu-projeto.supabase.co',
+          // SUPABASE_ANON_KEY: 'sua-anon-key-publica',
+          SUPABASE_URL: '',
+          SUPABASE_ANON_KEY: '',
+          WHATSAPP_NUMBER: '5511999990000',
+        };
+
+        const isSupabaseConfigured = () =>
+          Boolean(SUPABASE_CONFIG.SUPABASE_URL && SUPABASE_CONFIG.SUPABASE_ANON_KEY);
+
+        const supabaseHeaders = () => ({
+          apikey: SUPABASE_CONFIG.SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_CONFIG.SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=representation',
+        });
+
+        async function postgrestRequest(tablePath, options = {}) {
+          const url = `${SUPABASE_CONFIG.SUPABASE_URL}/rest/v1/${tablePath}`;
+          const res = await fetch(url, {
+            ...options,
+            headers: {
+              ...supabaseHeaders(),
+              ...(options.headers || {}),
+            },
+          });
+          if (!res.ok) {
+            throw new Error(`Supabase PostgREST error (${res.status})`);
+          }
+          return res.json();
+        }
+
+        // --------------------------------------------------------------------------
+        // FALLBACK DATASET (Espelha fielmente o schema relacional real)
+        // --------------------------------------------------------------------------
+        const MOCK_DB = {
+          members_checkins: {
+            active_members_count: 28,
+            max_capacity: 85,
+            temperature_c: 21,
+            status_label: 'Fluxo Moderado Agora',
+            updated_at: new Date().toISOString(),
+          },
+
+          trainers: [
+            {
+              id: 'tr-1',
+              full_name: 'Rodrigo Almeida',
+              specialty: 'Biomecânica & Hipertrofia',
+              cref: 'CREF 112045-G/SP',
+              shift: 'Manhã',
+            },
+            {
+              id: 'tr-2',
+              full_name: 'Larissa Mendonça',
+              specialty: 'HIIT Metabólico & Spinning',
+              cref: 'CREF 138902-G/SP',
+              shift: 'Manhã / Noite',
+            },
+            {
+              id: 'tr-3',
+              full_name: 'Thiago Bastos',
+              specialty: 'Funcional & Mobilidade Atlética',
+              cref: 'CREF 095412-G/SP',
+              shift: 'Tarde / Noite',
+            },
+          ],
+
+          plans: [
+            {
+              id: 'plan-start',
+              slug: 'start',
+              name: 'Plano Start',
+              subtitle: 'Base sólida em musculação e cardio',
+              price_monthly: 189,
+              price_annual: 142,
+              is_featured: false,
+              benefits: [
+                'Acesso livre à sala de musculação e biomecânica',
+                'Acesso completo à Arena Cardio & HIIT',
+                'Avaliação física inicial na entrada',
+                'App de acompanhamento de cargas e séries',
+              ],
+            },
+            {
+              id: 'plan-vital-pro',
+              slug: 'vital-pro',
+              name: 'Plano Vital Pro',
+              subtitle: 'Performance completa com turmas e dados',
+              price_monthly: 269,
+              price_annual: 202,
+              is_featured: true,
+              benefits: [
+                'Tudo do Plano Start sem restrição de horário',
+                'Aulas coletivas ilimitadas (Spinning, Funcional, HIIT, Yoga)',
+                'Exame de Bioimpedância segmentada a cada 90 dias',
+                'Ajuste trimestral de periodização com coach',
+              ],
+            },
+            {
+              id: 'plan-black-vip',
+              slug: 'black-vip',
+              name: 'Plano Black VIP',
+              subtitle: 'Acompanhamento individual e conveniência total',
+              price_monthly: 429,
+              price_annual: 322,
+              is_featured: false,
+              benefits: [
+                'Tudo do Plano Vital Pro + bioimpedância mensal',
+                '2 sessões mensais de treino 1-on-1 com especialista',
+                'Direito a 2 convidados por mês aos fins de semana',
+                'Estacionamento com manobrista incluso e kit toalha',
+              ],
+            },
+          ],
+
+          class_schedule: {
+            SEG: [
+              { id: 'seg-1', day_of_week: 'SEG', start_time: '06:30', class_name: 'HIIT Metabólico 45', coach_name: 'Larissa Mendonça', duration_min: 45, intensity: 4, intensity_label: 'Máxima', capacity: 12, spots_remaining: 4 },
+              { id: 'seg-2', day_of_week: 'SEG', start_time: '08:00', class_name: 'Biomecânica & Core', coach_name: 'Rodrigo Almeida', duration_min: 50, intensity: 3, intensity_label: 'Alta', capacity: 12, spots_remaining: 6 },
+              { id: 'seg-3', day_of_week: 'SEG', start_time: '12:15', class_name: 'Mobilidade Atlética', coach_name: 'Thiago Bastos', duration_min: 45, intensity: 2, intensity_label: 'Moderada', capacity: 12, spots_remaining: 7 },
+              { id: 'seg-4', day_of_week: 'SEG', start_time: '18:30', class_name: 'Spinning em Potência', coach_name: 'Larissa Mendonça', duration_min: 50, intensity: 4, intensity_label: 'Máxima', capacity: 12, spots_remaining: 3 },
+              { id: 'seg-5', day_of_week: 'SEG', start_time: '20:00', class_name: 'Funcional Força Total', coach_name: 'Thiago Bastos', duration_min: 55, intensity: 3, intensity_label: 'Alta', capacity: 12, spots_remaining: 5 },
+            ],
+            TER: [
+              { id: 'ter-1', day_of_week: 'TER', start_time: '07:00', class_name: 'Spinning Intervalado', coach_name: 'Larissa Mendonça', duration_min: 45, intensity: 4, intensity_label: 'Máxima', capacity: 12, spots_remaining: 5 },
+              { id: 'ter-2', day_of_week: 'TER', start_time: '09:30', class_name: 'Yoga & Recuperação', coach_name: 'Thiago Bastos', duration_min: 55, intensity: 1, intensity_label: 'Leve', capacity: 12, spots_remaining: 8 },
+              { id: 'ter-3', day_of_week: 'TER', start_time: '18:00', class_name: 'Funcional Kettlebell', coach_name: 'Rodrigo Almeida', duration_min: 50, intensity: 3, intensity_label: 'Alta', capacity: 12, spots_remaining: 2 },
+              { id: 'ter-4', day_of_week: 'TER', start_time: '19:30', class_name: 'HIIT Sprint Arena', coach_name: 'Larissa Mendonça', duration_min: 45, intensity: 4, intensity_label: 'Máxima', capacity: 12, spots_remaining: 4 },
+            ],
+            QUA: [
+              { id: 'qua-1', day_of_week: 'QUA', start_time: '06:30', class_name: 'Força & Cadeia Posterior', coach_name: 'Rodrigo Almeida', duration_min: 55, intensity: 3, intensity_label: 'Alta', capacity: 12, spots_remaining: 6 },
+              { id: 'qua-2', day_of_week: 'QUA', start_time: '12:30', class_name: 'Core Stability Express', coach_name: 'Thiago Bastos', duration_min: 35, intensity: 2, intensity_label: 'Moderada', capacity: 12, spots_remaining: 9 },
+              { id: 'qua-3', day_of_week: 'QUA', start_time: '18:30', class_name: 'Spinning Endurance', coach_name: 'Larissa Mendonça', duration_min: 50, intensity: 3, intensity_label: 'Alta', capacity: 12, spots_remaining: 4 },
+              { id: 'qua-4', day_of_week: 'QUA', start_time: '20:00', class_name: 'HIIT & Remo Ergômetro', coach_name: 'Thiago Bastos', duration_min: 45, intensity: 4, intensity_label: 'Máxima', capacity: 12, spots_remaining: 3 },
+            ],
+            QUI: [
+              { id: 'qui-1', day_of_week: 'QUI', start_time: '07:00', class_name: 'Funcional Atlético', coach_name: 'Thiago Bastos', duration_min: 50, intensity: 3, intensity_label: 'Alta', capacity: 12, spots_remaining: 5 },
+              { id: 'qui-2', day_of_week: 'QUI', start_time: '17:30', class_name: 'Mobilidade & Postura', coach_name: 'Rodrigo Almeida', duration_min: 45, intensity: 2, intensity_label: 'Moderada', capacity: 12, spots_remaining: 7 },
+              { id: 'qui-3', day_of_week: 'QUI', start_time: '19:00', class_name: 'Spinning Threshold', coach_name: 'Larissa Mendonça', duration_min: 50, intensity: 4, intensity_label: 'Máxima', capacity: 12, spots_remaining: 2 },
+            ],
+            SEX: [
+              { id: 'sex-1', day_of_week: 'SEX', start_time: '06:30', class_name: 'HIIT Friday Burn', coach_name: 'Larissa Mendonça', duration_min: 45, intensity: 4, intensity_label: 'Máxima', capacity: 12, spots_remaining: 4 },
+              { id: 'sex-2', day_of_week: 'SEX', start_time: '12:15', class_name: 'Upper Body Biomechanics', coach_name: 'Rodrigo Almeida', duration_min: 50, intensity: 3, intensity_label: 'Alta', capacity: 12, spots_remaining: 6 },
+              { id: 'sex-3', day_of_week: 'SEX', start_time: '18:00', class_name: 'Yoga Flow & Respiração', coach_name: 'Thiago Bastos', duration_min: 55, intensity: 1, intensity_label: 'Leve', capacity: 12, spots_remaining: 5 },
+            ],
+            SAB: [
+              { id: 'sab-1', day_of_week: 'SAB', start_time: '08:30', class_name: 'Team Conditioning 60', coach_name: 'Thiago Bastos', duration_min: 60, intensity: 4, intensity_label: 'Máxima', capacity: 12, spots_remaining: 3 },
+              { id: 'sab-2', day_of_week: 'SAB', start_time: '10:00', class_name: 'Spinning Endorfina', coach_name: 'Larissa Mendonça', duration_min: 50, intensity: 3, intensity_label: 'Alta', capacity: 12, spots_remaining: 5 },
+              { id: 'sab-3', day_of_week: 'SAB', start_time: '11:30', class_name: 'Mobilidade Global', coach_name: 'Rodrigo Almeida', duration_min: 45, intensity: 1, intensity_label: 'Leve', capacity: 12, spots_remaining: 8 },
+            ],
+          },
+        };
+
+        const STORAGE_KEYS = {
+          BOOKED_CLASSES: 'espaco_vital_booked_classes_v1',
+          IMC_HISTORY: 'espaco_vital_imc_history_v1',
+          TRIAL_LEADS: 'espaco_vital_trial_leads_v1',
+        };
+
+        const getBookedSet = () => {
+          try {
+            return new Set(JSON.parse(localStorage.getItem(STORAGE_KEYS.BOOKED_CLASSES) || '[]'));
+          } catch {
+            return new Set();
+          }
+        };
+
+        const saveBookedSet = (set) => {
+          try {
+            localStorage.setItem(STORAGE_KEYS.BOOKED_CLASSES, JSON.stringify([...set]));
+          } catch {
+            // Ignore storage quota errors
+          }
+        };
+
+        // --------------------------------------------------------------------------
+        // PUBLIC ASYNC API
+        // --------------------------------------------------------------------------
+
+        async function fetchLiveOccupancy(simulateDelta = false) {
+          if (isSupabaseConfigured()) {
+            try {
+              const rows = await postgrestRequest('members_checkins?select=*&order=updated_at.desc&limit=1');
+              if (rows && rows.length > 0) return rows[0];
+            } catch (err) {
+              console.warn('[DataService] Fallback occupancy:', err.message);
+            }
+          }
+
+          if (simulateDelta) {
+            const delta = Math.floor(Math.random() * 5) - 2; // -2 to +2
+            const nextCount = Math.min(62, Math.max(18, MOCK_DB.members_checkins.active_members_count + delta));
+            MOCK_DB.members_checkins.active_members_count = nextCount;
+            MOCK_DB.members_checkins.status_label =
+              nextCount < 25 ? 'Fluxo Tranquilo Agora' : nextCount < 45 ? 'Fluxo Moderado Agora' : 'Alta Energia Agora';
+            MOCK_DB.members_checkins.updated_at = new Date().toISOString();
+          }
+          return { ...MOCK_DB.members_checkins };
+        }
+
+        async function fetchTrainers() {
+          if (isSupabaseConfigured()) {
+            try {
+              return await postgrestRequest('trainers?select=*&order=full_name.asc');
+            } catch (err) {
+              console.warn('[DataService] Fallback trainers:', err.message);
+            }
+          }
+          return [...MOCK_DB.trainers];
+        }
+
+        async function fetchPlans() {
+          if (isSupabaseConfigured()) {
+            try {
+              return await postgrestRequest('plans?select=*&order=price_monthly.asc');
+            } catch (err) {
+              console.warn('[DataService] Fallback plans:', err.message);
+            }
+          }
+          return [...MOCK_DB.plans];
+        }
+
+        async function fetchScheduleByDay(dayKey) {
+          const normalizedDay = dayKey.toUpperCase();
+          const bookedSet = getBookedSet();
+
+          if (isSupabaseConfigured()) {
+            try {
+              const rows = await postgrestRequest(
+                `class_schedule?day_of_week=eq.${encodeURIComponent(normalizedDay)}&order=start_time.asc`
+              );
+              return rows.map((row) => ({ ...row, user_booked: bookedSet.has(row.id) }));
+            } catch (err) {
+              console.warn('[DataService] Fallback schedule:', err.message);
+            }
+          }
+
+          const list = MOCK_DB.class_schedule[normalizedDay] || [];
+          return list.map((item) => {
+            const isBooked = bookedSet.has(item.id);
+            const effectiveSpots = isBooked ? Math.max(0, item.spots_remaining - 1) : item.spots_remaining;
+            return {
+              ...item,
+              spots_remaining: effectiveSpots,
+              user_booked: isBooked,
+            };
+          });
+        }
+
+        async function bookClassSpot(classId, dayKey) {
+          const bookedSet = getBookedSet();
+          if (bookedSet.has(classId)) {
+            return { alreadyBooked: true };
+          }
+
+          if (isSupabaseConfigured()) {
+            try {
+              // Em produção: RPC segura `reserve_class_spot(p_class_id)` decrementa atômicamente no PostgreSQL
+              await postgrestRequest(`rpc/reserve_class_spot`, {
+                method: 'POST',
+                body: JSON.stringify({ p_class_id: classId }),
+              });
+            } catch (err) {
+              console.warn('[DataService] Fallback class reservation:', err.message);
+            }
+          }
+
+          bookedSet.add(classId);
+          saveBookedSet(bookedSet);
+          const updatedList = await fetchScheduleByDay(dayKey);
+          const reservedClass = updatedList.find((c) => c.id === classId);
+          return { alreadyBooked: false, reservedClass, updatedList };
+        }
+
+        async function calculateIMCAndSave({ weightKg, heightCm, goal }) {
+          const heightM = heightCm / 100;
+          const imc = Number((weightKg / (heightM * heightM)).toFixed(1));
+
+          let classification = 'Peso Ideal';
+          let gaugeRatio = 0.55;
+          if (imc < 18.5) {
+            classification = 'Abaixo do Peso';
+            gaugeRatio = 0.22;
+          } else if (imc < 25) {
+            classification = 'Peso Ideal';
+            gaugeRatio = 0.52;
+          } else if (imc < 30) {
+            classification = 'Sobrepeso';
+            gaugeRatio = 0.76;
+          } else {
+            classification = 'Obesidade · Foco Metabólico';
+            gaugeRatio = 0.94;
+          }
+
+          const recommendations = {
+            Hipertrofia: {
+              plan: 'Plano Vital Pro',
+              freq: '4–5 treinos / sem',
+              title: 'Força Estruturada + Bioimpedância Trimestral',
+              desc: 'Combinação de 4 sessões de musculação biomecânica com progressão de carga e controle de massa magra por segmento.',
+            },
+            Emagrecimento: {
+              plan: 'Plano Vital Pro',
+              freq: '5 treinos / sem',
+              title: 'Circuitos HIIT + Musculação Metabólica',
+              desc: 'Alternância entre treinos resistidos de alto gasto energético e sessões intervaladas na Arena Cardio para preservar massa magra.',
+            },
+            Condicionamento: {
+              plan: 'Plano Black VIP',
+              freq: '4–6 treinos / sem',
+              title: 'Potência Aeróbica + Mobilidade Atlética',
+              desc: 'Integração entre Spinning Threshold, Funcional e avaliação mensal para elevar VO2 máximo e estabilidade articular.',
+            },
+          };
+
+          const rec = recommendations[goal] || recommendations.Hipertrofia;
+          const snapshot = {
+            weightKg,
+            heightCm,
+            goal,
+            imc,
+            classification,
+            gaugeRatio,
+            recommendedPlan: rec.plan,
+            freq: rec.freq,
+            title: rec.title,
+            desc: rec.desc,
+            savedAt: new Date().toISOString(),
+          };
+
+          try {
+            const history = JSON.parse(localStorage.getItem(STORAGE_KEYS.IMC_HISTORY) || '[]');
+            history.unshift(snapshot);
+            localStorage.setItem(STORAGE_KEYS.IMC_HISTORY, JSON.stringify(history.slice(0, 10)));
+          } catch {
+            // Ignore storage errors
+          }
+
+          return snapshot;
+        }
+
+        async function createTrialBooking(payload) {
+          const protocol = `EV-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+          const record = {
+            protocol_code: protocol,
+            full_name: payload.full_name,
+            whatsapp: payload.whatsapp,
+            goal: payload.goal,
+            preferred_shift: payload.preferred_shift,
+            selected_plan: payload.selected_plan || null,
+            selected_class: payload.selected_class || null,
+            imc_snapshot: payload.imc_snapshot || null,
+            created_at: new Date().toISOString(),
+          };
+
+          if (isSupabaseConfigured()) {
+            try {
+              const inserted = await postgrestRequest('leads_experimental_class', {
+                method: 'POST',
+                body: JSON.stringify(record),
+              });
+              if (inserted && inserted[0]) return inserted[0];
+            } catch (err) {
+              console.warn('[DataService] Fallback trial booking:', err.message);
+            }
+          }
+
+          try {
+            const leads = JSON.parse(localStorage.getItem(STORAGE_KEYS.TRIAL_LEADS) || '[]');
+            leads.unshift(record);
+            localStorage.setItem(STORAGE_KEYS.TRIAL_LEADS, JSON.stringify(leads.slice(0, 20)));
+          } catch {
+            // Ignore storage errors
+          }
+
+          // Simulate brief async persistence latency
+          await new Promise((r) => setTimeout(r, 260));
+          return record;
+        }
+
+        return {
+          WHATSAPP_NUMBER: SUPABASE_CONFIG.WHATSAPP_NUMBER,
+          fetchLiveOccupancy,
+          fetchTrainers,
+          fetchPlans,
+          fetchScheduleByDay,
+          bookClassSpot,
+          calculateIMCAndSave,
+          createTrialBooking,
+        };
+      })();
+
+      /**
+       * ============================================================================
+       * UI CONTROLLERS & GSAP CHOREOGRAPHY
+       * ============================================================================
+       */
+      document.addEventListener('DOMContentLoaded', async () => {
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+
+        // 1. Preloader & Hero Choreography
+        const initMotion = () => {
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          const preloader = document.getElementById('preloader');
+          const preloaderBar = document.getElementById('preloader-bar');
+
+          if (typeof gsap === 'undefined' || prefersReduced) {
+            if (preloader) preloader.style.display = 'none';
+            return;
+          }
+
+          gsap.registerPlugin(ScrollTrigger);
+
+          const tl = gsap.timeline();
+          tl.to(preloaderBar, {
+            scaleX: 1,
+            duration: 0.72,
+            ease: 'power3.out',
+          })
+            .to(preloader, {
+              yPercent: -100,
+              duration: 0.55,
+              ease: 'power4.inOut',
+              onComplete: () => {
+                preloader.style.display = 'none';
+              },
+            })
+            .fromTo(
+              '.hero-reveal',
+              { yPercent: 110, opacity: 0 },
+              { yPercent: 0, opacity: 1, duration: 0.75, stagger: 0.12, ease: 'power3.out' },
+              '-=0.2'
+            )
+            .fromTo(
+              '.hero-fade',
+              { y: 24, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.65, stagger: 0.08, ease: 'power2.out' },
+              '-=0.45'
+            );
+
+          // Hero Parallax Background
+          gsap.to('#hero-parallax-bg', {
+            yPercent: 12,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '#hero',
+              start: 'top top',
+              end: 'bottom top',
+              scrub: true,
+            },
+          });
+
+          // Bento Grid Staggered Reveal
+          gsap.fromTo(
+            '.bento-card',
+            { y: 28, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              stagger: 0.08,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: '#ecossistema',
+                start: 'top 78%',
+                once: true,
+              },
+            }
+          );
+        };
+
+        initMotion();
+
+        // 2. Hero Mouse/Touch Spotlight & Card Hover Spotlight
+        const heroSection = document.getElementById('hero');
+        const heroSpotlight = document.getElementById('hero-spotlight');
+        if (heroSection && heroSpotlight) {
+          const moveSpotlight = (clientX, clientY) => {
+            const rect = heroSection.getBoundingClientRect();
+            const x = ((clientX - rect.left) / rect.width) * 100;
+            const y = ((clientY - rect.top) / rect.height) * 100;
+            heroSpotlight.style.background = `radial-gradient(640px circle at ${x}% ${y}%, rgba(0, 230, 118, 0.18), rgba(16, 185, 129, 0.05) 42%, transparent 74%)`;
+          };
+          heroSection.addEventListener('mousemove', (e) => moveSpotlight(e.clientX, e.clientY));
+          heroSection.addEventListener(
+            'touchmove',
+            (e) => {
+              if (e.touches[0]) moveSpotlight(e.touches[0].clientX, e.touches[0].clientY);
+            },
+            { passive: true }
+          );
+        }
+
+        document.addEventListener('mousemove', (e) => {
+          const card = e.target.closest('.glass-card');
+          if (!card) return;
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+          card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+        });
+
+        // 3. Infinite Kinetic Marquee Ticker (shifts speed/direction subtly with scroll)
+        const initMarquee = () => {
+          const track = document.getElementById('marquee-track');
+          const group = track?.querySelector('.marquee-group');
+          if (!track || !group) return;
+
+          // Duplicate group twice for seamless loop
+          track.appendChild(group.cloneNode(true));
+          track.appendChild(group.cloneNode(true));
+
+          if (typeof gsap === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
+          }
+
+          let xPercent = 0;
+          let direction = -1;
+          let speed = 0.045;
+
+          const tick = () => {
+            xPercent += speed * direction;
+            if (xPercent <= -33.333) xPercent = 0;
+            if (xPercent > 0) xPercent = -33.333;
+            track.style.transform = `translate3d(${xPercent}%, 0, 0)`;
+            requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+
+          let lastScrollY = window.scrollY;
+          window.addEventListener(
+            'scroll',
+            () => {
+              const currentY = window.scrollY;
+              direction = currentY >= lastScrollY ? -1 : 1;
+              lastScrollY = currentY;
+            },
+            { passive: true }
+          );
+        };
+        initMarquee();
+
+        // 4. Mobile Navigation Drawer
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileDrawer = document.getElementById('mobile-nav-drawer');
+        if (mobileMenuBtn && mobileDrawer) {
+          mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = !mobileDrawer.classList.contains('hidden');
+            mobileDrawer.classList.toggle('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', String(!isOpen));
+          });
+          mobileDrawer.querySelectorAll('.mobile-nav-link').forEach((link) => {
+            link.addEventListener('click', () => {
+              mobileDrawer.classList.add('hidden');
+              mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            });
+          });
+        }
+
+        // 5. Live Occupancy Widget Controller
+        const renderOccupancy = async (simulateDelta = false) => {
+          const data = await DataService.fetchLiveOccupancy(simulateDelta);
+          const pct = Math.round((data.active_members_count / data.max_capacity) * 100);
+          document.getElementById('live-members-count').textContent = data.active_members_count;
+          document.getElementById('live-temp').textContent = `${data.temperature_c}°C`;
+          document.getElementById('live-occupancy-pct').textContent = `${pct}%`;
+          document.getElementById('live-occupancy-bar').style.transform = `scaleX(${Math.min(1, pct / 100)})`;
+          document.getElementById('live-status-label').innerHTML = `
+            <span class="w-2 h-2 rounded-full bg-vital animate-pulse" aria-hidden="true"></span>
+            ${data.status_label}
+          `;
+          const timeStr = new Date(data.updated_at).toLocaleTimeString('pt-BR', {
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+          document.getElementById('live-updated-at').textContent = `Atualizado às ${timeStr}`;
+        };
+
+        await renderOccupancy(false);
+        document.getElementById('refresh-occupancy-btn')?.addEventListener('click', () => {
+          renderOccupancy(true);
+        });
+
+        // 6. Populate Trainers in Bento Grid
+        const renderTrainers = async () => {
+          const container = document.getElementById('trainers-list');
+          if (!container) return;
+          const trainers = await DataService.fetchTrainers();
+          container.innerHTML = trainers
+            .map(
+              (tr) => `
+              <div class="py-3 first:pt-0 last:pb-0 flex items-center justify-between gap-4">
+                <div>
+                  <div class="text-sm font-semibold text-white">${tr.full_name}</div>
+                  <div class="text-xs text-zinc-400">${tr.specialty}</div>
+                </div>
+                <div class="text-right shrink-0">
+                  <div class="text-[11px] font-mono text-zinc-400">${tr.cref}</div>
+                  <div class="text-[11px] font-mono text-vital">${tr.shift}</div>
+                </div>
+              </div>
+            `
+            )
+            .join('');
+        };
+        await renderTrainers();
+
+        // 7. Interactive Schedule Controller (`class_schedule`)
+        let activeDay = 'SEG';
+        const scheduleContainer = document.getElementById('schedule-container');
+        const dayTabs = document.querySelectorAll('.day-tab');
+        const pillIndicator = document.getElementById('day-pill-indicator');
+
+        const moveDayIndicator = (btn) => {
+          if (!pillIndicator || !btn) return;
+          pillIndicator.style.width = `${btn.offsetWidth}px`;
+          pillIndicator.style.transform = `translateX(${btn.offsetLeft - 6}px)`;
+        };
+
+        const renderSchedule = async (dayKey) => {
+          if (!scheduleContainer) return;
+          const classes = await DataService.fetchScheduleByDay(dayKey);
+
+          if (!classes.length) {
+            scheduleContainer.innerHTML = `
+              <div class="glass-card rounded-2xl p-8 text-center text-sm text-zinc-400">
+                Nenhuma aula cadastrada para este dia no momento.
+              </div>
+            `;
+            return;
+          }
+
+          scheduleContainer.innerHTML = classes
+            .map((cls) => {
+              const bars = [1, 2, 3, 4]
+                .map(
+                  (lvl) =>
+                    `<span class="w-3 h-1.5 rounded-sm ${
+                      lvl <= cls.intensity ? 'bg-vital' : 'bg-white/10'
+                    }"></span>`
+                )
+                .join('');
+
+              const spotsText =
+                cls.spots_remaining === 0
+                  ? 'Turma lotada'
+                  : `${cls.spots_remaining} ${cls.spots_remaining === 1 ? 'vaga restante' : 'vagas restantes'}`;
+
+              return `
+                <div class="glass-card rounded-2xl p-5 sm:px-7 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+                    <div class="font-mono text-2xl font-bold text-vital tabular-nums shrink-0 w-20">
+                      ${cls.start_time}
+                    </div>
+                    <div class="space-y-1">
+                      <h3 class="font-display text-xl font-bold text-white uppercase tracking-tight">
+                        ${cls.class_name}
+                      </h3>
+                      <div class="flex flex-wrap items-center gap-2 text-xs text-zinc-400">
+                        <span>Coach ${cls.coach_name}</span>
+                        <span aria-hidden="true">·</span>
+                        <span class="font-mono tabular-nums">${cls.duration_min} min</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex flex-wrap sm:flex-nowrap items-center justify-between md:justify-end gap-5">
+                    <div class="flex items-center gap-2.5" title="Intensidade: ${cls.intensity_label}">
+                      <div class="flex items-center gap-1" aria-hidden="true">${bars}</div>
+                      <span class="text-xs font-mono text-zinc-300">${cls.intensity_label}</span>
+                    </div>
+
+                    <div class="text-xs font-mono tabular-nums ${
+                      cls.spots_remaining <= 3 ? 'text-limeNeon font-semibold' : 'text-zinc-300'
+                    } min-w-[120px] text-left md:text-right">
+                      ${spotsText}
+                    </div>
+
+                    ${
+                      cls.user_booked
+                        ? `<button type="button" disabled class="px-4 py-2.5 rounded-xl text-xs font-bold bg-vital/15 text-vital border border-vital/40 whitespace-nowrap shrink-0 cursor-default">Vaga Reservada</button>`
+                        : `<button type="button" data-book-class="${cls.id}" data-class-label="${cls.class_name} (${dayKey} · ${cls.start_time})" ${
+                            cls.spots_remaining === 0 ? 'disabled' : ''
+                          } class="px-4 py-2.5 rounded-xl text-xs font-bold border border-vital/40 text-white hover:bg-vital hover:text-obsidian transition-colors whitespace-nowrap shrink-0 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">Reservar Vaga</button>`
+                    }
+                  </div>
+                </div>
+              `;
+            })
+            .join('');
+        };
+
+        dayTabs.forEach((tab) => {
+          tab.addEventListener('click', async () => {
+            activeDay = tab.dataset.day;
+            dayTabs.forEach((t) => {
+              const isSelected = t === tab;
+              t.classList.toggle('text-obsidian', isSelected);
+              t.classList.toggle('text-zinc-400', !isSelected);
+              t.setAttribute('aria-selected', String(isSelected));
+            });
+            moveDayIndicator(tab);
+            await renderSchedule(activeDay);
+          });
+        });
+
+        await renderSchedule(activeDay);
+        requestAnimationFrame(() => moveDayIndicator(dayTabs[0]));
+        window.addEventListener('resize', () => {
+          const activeBtn = Array.from(dayTabs).find((t) => t.dataset.day === activeDay);
+          if (activeBtn) moveDayIndicator(activeBtn);
+        });
+
+        // 8. Trial Booking Modal Controller
+        const modal = document.getElementById('trial-modal');
+        const closeModalBtn = document.getElementById('close-trial-modal');
+        const doneBtn = document.getElementById('trial-done-btn');
+        const formView = document.getElementById('trial-form-view');
+        const successView = document.getElementById('trial-success-view');
+        const bookingForm = document.getElementById('trial-booking-form');
+        const contextBanner = document.getElementById('trial-context-banner');
+        const formError = document.getElementById('trial-form-error');
+
+        let bookingContext = {
+          selected_plan: null,
+          selected_class: null,
+          imc_snapshot: null,
+        };
+
+        const openTrialModal = (context = {}) => {
+          bookingContext = {
+            selected_plan: context.plan || null,
+            selected_class: context.classLabel || null,
+            imc_snapshot: context.imcSnapshot || null,
+          };
+
+          formView.classList.remove('hidden');
+          successView.classList.add('hidden');
+          formError.classList.add('hidden');
+
+          const summaryLines = [];
+          if (bookingContext.selected_class) {
+            summaryLines.push(`Aula selecionada: ${bookingContext.selected_class}`);
+          }
+          if (bookingContext.selected_plan) {
+            summaryLines.push(`Plano de interesse: ${bookingContext.selected_plan}`);
+          }
+          if (bookingContext.imc_snapshot) {
+            summaryLines.push(
+              `Diagnóstico salvo: IMC ${bookingContext.imc_snapshot.imc} (${bookingContext.imc_snapshot.classification}) · Meta: ${bookingContext.imc_snapshot.goal}`
+            );
+            const goalSelect = document.getElementById('trial-goal');
+            if (goalSelect) goalSelect.value = bookingContext.imc_snapshot.goal;
+          }
+
+          if (summaryLines.length > 0) {
+            contextBanner.innerHTML = summaryLines.map((l) => `<div>${l}</div>`).join('');
+            contextBanner.classList.remove('hidden');
+          } else {
+            contextBanner.classList.add('hidden');
+          }
+
+          modal.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+          setTimeout(() => document.getElementById('trial-name')?.focus(), 80);
+        };
+
+        const closeTrialModal = () => {
+          modal.classList.add('hidden');
+          document.body.style.overflow = '';
+        };
+
+        closeModalBtn?.addEventListener('click', closeTrialModal);
+        doneBtn?.addEventListener('click', closeTrialModal);
+        modal?.addEventListener('click', (e) => {
+          if (e.target === modal) closeTrialModal();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeTrialModal();
+        });
+
+        // Open Trial Buttons across page
+        document.querySelectorAll('[data-open-trial]').forEach((btn) => {
+          btn.addEventListener('click', () => openTrialModal());
+        });
+
+        // Delegate Class Reservation clicks
+        scheduleContainer?.addEventListener('click', async (e) => {
+          const btn = e.target.closest('[data-book-class]');
+          if (!btn) return;
+          const classId = btn.dataset.bookClass;
+          const classLabel = btn.dataset.classLabel;
+          await DataService.bookClassSpot(classId, activeDay);
+          await renderSchedule(activeDay);
+          openTrialModal({ classLabel });
+        });
+
+        // WhatsApp Input Mask
+        const whatsappInput = document.getElementById('trial-whatsapp');
+        whatsappInput?.addEventListener('input', (e) => {
+          let digits = e.target.value.replace(/\D/g, '').slice(0, 11);
+          if (digits.length > 6) {
+            e.target.value = `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+          } else if (digits.length > 2) {
+            e.target.value = `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+          } else if (digits.length > 0) {
+            e.target.value = `(${digits}`;
+          }
+        });
+
+        bookingForm?.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          formError.classList.add('hidden');
+
+          const name = document.getElementById('trial-name').value.trim();
+          const whatsapp = document.getElementById('trial-whatsapp').value.trim();
+          const goal = document.getElementById('trial-goal').value;
+          const shift = document.getElementById('trial-shift').value;
+
+          const phoneDigits = whatsapp.replace(/\D/g, '');
+          if (name.length < 3) {
+            formError.textContent = 'Por favor, informe seu nome completo.';
+            formError.classList.remove('hidden');
+            return;
+          }
+          if (phoneDigits.length < 10) {
+            formError.textContent = 'Informe um WhatsApp válido com DDD.';
+            formError.classList.remove('hidden');
+            return;
+          }
+
+          const submitBtn = document.getElementById('trial-submit-btn');
+          submitBtn.disabled = true;
+          submitBtn.querySelector('span').textContent = 'Registrando...';
+
+          try {
+            const created = await DataService.createTrialBooking({
+              full_name: name,
+              whatsapp,
+              goal,
+              preferred_shift: shift,
+              ...bookingContext,
+            });
+
+            document.getElementById('trial-protocol-code').textContent = created.protocol_code;
+            const waText = encodeURIComponent(
+              `Olá, Espaço Vital! Acabei de pré-agendar minha aula experimental.\n` +
+                `Protocolo: ${created.protocol_code}\n` +
+                `Nome: ${name}\n` +
+                `Objetivo: ${goal}\n` +
+                `Turno: ${shift}` +
+                (bookingContext.selected_class ? `\nAula: ${bookingContext.selected_class}` : '') +
+                (bookingContext.selected_plan ? `\nPlano: ${bookingContext.selected_plan}` : '')
+            );
+            document.getElementById('trial-whatsapp-confirm').href =
+              `https://wa.me/${DataService.WHATSAPP_NUMBER}?text=${waText}`;
+
+            formView.classList.add('hidden');
+            successView.classList.remove('hidden');
+          } catch {
+            formError.textContent = 'Não foi possível concluir agora. Tente novamente.';
+            formError.classList.remove('hidden');
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.querySelector('span').textContent = 'Confirmar Pré-Agendamento';
+          }
+        });
+
+        // 9. Gamified IMC & Goal Calculator Controller
+        const weightInput = document.getElementById('calc-weight');
+        const heightInput = document.getElementById('calc-height');
+        const goalBtns = document.querySelectorAll('.goal-btn');
+        let currentGoal = 'Hipertrofia';
+        let latestSnapshot = null;
+
+        const updateCalculator = async () => {
+          const weightKg = Number(weightInput.value);
+          const heightCm = Number(heightInput.value);
+          document.getElementById('calc-weight-val').textContent = weightKg;
+          document.getElementById('calc-height-val').textContent = heightCm;
+
+          const snap = await DataService.calculateIMCAndSave({
+            weightKg,
+            heightCm,
+            goal: currentGoal,
+          });
+          latestSnapshot = snap;
+
+          document.getElementById('calc-imc-value').textContent = snap.imc.toFixed(1);
+          document.getElementById('calc-imc-class').textContent = snap.classification;
+          document.getElementById('calc-weekly-freq').textContent = snap.freq;
+          document.getElementById('calc-gauge-bar').style.transform = `scaleX(${snap.gaugeRatio})`;
+          document.getElementById('calc-plan-badge').textContent = snap.recommendedPlan;
+          document.getElementById('calc-protocol-title').textContent = snap.title;
+          document.getElementById('calc-protocol-desc').textContent = snap.desc;
+        };
+
+        weightInput?.addEventListener('input', updateCalculator);
+        heightInput?.addEventListener('input', updateCalculator);
+        goalBtns.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            currentGoal = btn.dataset.goal;
+            goalBtns.forEach((b) => {
+              const active = b === btn;
+              b.classList.toggle('bg-vital', active);
+              b.classList.toggle('text-obsidian', active);
+              b.classList.toggle('text-zinc-400', !active);
+            });
+            updateCalculator();
+          });
+        });
+
+        document.getElementById('save-imc-btn')?.addEventListener('click', async () => {
+          await updateCalculator();
+          const feedback = document.getElementById('calc-saved-feedback');
+          feedback.classList.remove('hidden');
+          setTimeout(() => {
+            feedback.classList.add('hidden');
+            openTrialModal({
+              plan: latestSnapshot?.recommendedPlan,
+              imcSnapshot: latestSnapshot,
+            });
+          }, 420);
+        });
+
+        await updateCalculator();
+
+        // 10. Plans & Billing Toggle Controller (with animated number count-up/down)
+        let billingCycle = 'monthly';
+        const plansGrid = document.getElementById('plans-grid');
+        const plansData = await DataService.fetchPlans();
+
+        const renderPlans = () => {
+          if (!plansGrid) return;
+          plansGrid.innerHTML = plansData
+            .map((plan) => {
+              const targetPrice = billingCycle === 'monthly' ? plan.price_monthly : plan.price_annual;
+              const featuredClass = plan.is_featured
+                ? 'border-vital/75 shadow-[0_0_40px_rgba(0,230,118,0.14)] bg-graphite/95'
+                : 'border-white/[0.08]';
+
+              return `
+                <article class="glass-card rounded-2xl p-7 sm:p-8 flex flex-col justify-between space-y-7 ${featuredClass}">
+                  <div class="space-y-5">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-xs font-mono uppercase tracking-wider ${
+                        plan.is_featured ? 'text-vital font-semibold' : 'text-zinc-400'
+                      }">
+                        ${plan.is_featured ? 'Mais Escolhido' : 'Assinatura'}
+                      </span>
+                      <span class="text-xs font-mono text-zinc-400">
+                        ${billingCycle === 'annual' ? 'Fidelidade 12 meses' : 'Sem fidelidade'}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 class="font-display text-3xl font-extrabold text-white uppercase tracking-tight">
+                        ${plan.name}
+                      </h3>
+                      <p class="text-sm text-zinc-400 mt-1">${plan.subtitle}</p>
+                    </div>
+
+                    <div class="pt-2 pb-4 border-b border-white/[0.08] flex items-baseline gap-1.5">
+                      <span class="text-sm font-mono text-zinc-400">R$</span>
+                      <span
+                        class="plan-price font-mono text-5xl font-bold text-white tabular-nums"
+                        data-plan-slug="${plan.slug}"
+                        data-price-monthly="${plan.price_monthly}"
+                        data-price-annual="${plan.price_annual}"
+                      >${targetPrice}</span>
+                      <span class="text-sm text-zinc-400">/ mês</span>
+                    </div>
+
+                    <ul class="space-y-3 text-sm text-zinc-200">
+                      ${plan.benefits
+                        .map(
+                          (b) => `
+                          <li class="flex items-start gap-2.5">
+                            <i data-lucide="check" class="w-4 h-4 text-vital shrink-0 mt-0.5"></i>
+                            <span>${b}</span>
+                          </li>
+                        `
+                        )
+                        .join('')}
+                    </ul>
+                  </div>
+
+                  <button
+                    type="button"
+                    data-select-plan="${plan.name} (${billingCycle === 'annual' ? 'Anual' : 'Mensal'})"
+                    class="${
+                      plan.is_featured
+                        ? 'btn-vital'
+                        : 'bg-white/[0.06] hover:bg-vital hover:text-obsidian text-white border border-white/15'
+                    } w-full py-3.5 px-5 rounded-xl text-sm font-bold transition-colors whitespace-nowrap cursor-pointer"
+                  >
+                    Começar com ${plan.name}
+                  </button>
+                </article>
+              `;
+            })
+            .join('');
+
+          if (window.lucide) lucide.createIcons();
+        };
+
+        renderPlans();
+
+        const animatePlanNumbers = (cycle) => {
+          document.querySelectorAll('.plan-price').forEach((el) => {
+            const fromVal = Number(el.textContent);
+            const toVal = Number(cycle === 'monthly' ? el.dataset.priceMonthly : el.dataset.priceAnnual);
+            const counter = { val: fromVal };
+
+            if (typeof gsap !== 'undefined') {
+              gsap.to(counter, {
+                val: toVal,
+                duration: 0.45,
+                ease: 'power2.out',
+                onUpdate: () => {
+                  el.textContent = Math.round(counter.val);
+                },
+              });
+            } else {
+              el.textContent = toVal;
+            }
+          });
+        };
+
+        document.querySelectorAll('.billing-toggle').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const nextCycle = btn.dataset.billing;
+            if (nextCycle === billingCycle) return;
+            billingCycle = nextCycle;
+
+            document.querySelectorAll('.billing-toggle').forEach((b) => {
+              const active = b === btn;
+              b.classList.toggle('bg-vital', active);
+              b.classList.toggle('text-obsidian', active);
+              b.classList.toggle('text-zinc-300', !active);
+            });
+
+            // Update card labels and animate prices
+            renderPlans();
+            // Reset start numbers visually before count-up for crisp animation
+            document.querySelectorAll('.plan-price').forEach((el) => {
+              const prev = billingCycle === 'annual' ? el.dataset.priceMonthly : el.dataset.priceAnnual;
+              el.textContent = prev;
+            });
+            animatePlanNumbers(billingCycle);
+          });
+        });
+
+        plansGrid?.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-select-plan]');
+          if (!btn) return;
+          openTrialModal({ plan: btn.dataset.selectPlan });
+        });
+
+        // 11. Horizontal Testimonials Carousel Controls
+        const track = document.getElementById('testimonials-track');
+        document.getElementById('carousel-prev')?.addEventListener('click', () => {
+          track?.scrollBy({ left: -380, behavior: 'smooth' });
+        });
+        document.getElementById('carousel-next')?.addEventListener('click', () => {
+          track?.scrollBy({ left: 380, behavior: 'smooth' });
+        });
+      });
+    </script>
+  </body>
+</html>
